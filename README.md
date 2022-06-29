@@ -5,6 +5,7 @@ Made in ~1 Day
 
 # Info
 - HWID Authenticated via CPU Serial, First Drive Found On System & current user logged in, all strings reversed then hashed with md5
+- Hash syntax is the same as the c# version so active users will work on both versions
 
 # Setup
 - Provide link to auth file (either to raw github file or file on a server) for the app to access hashes
