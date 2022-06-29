@@ -92,7 +92,7 @@ void func::login()
 EnterUsername:
 
 	input("Enter Username: ", user);
-	string user_list = DownloadString("https://raw.githubusercontent.com/rarksyy/gh_auth_test/main/cppauth.auth");
+	string user_list = DownloadString("input raw file link here");
 	DWORD VSN = 0; GetVolumeInformation("c:\\", NULL, NULL, &VSN, NULL, NULL, NULL, NULL);
 	if (user_list.find(user + md5(user)) != string::npos) {
 		
