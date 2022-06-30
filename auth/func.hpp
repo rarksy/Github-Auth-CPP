@@ -18,10 +18,10 @@ namespace func
 	void Register();
 	void Access();
 
-	template<class T>
-	inline void log(T content)
+	template <typename T>
+	inline void log(T content) //integrate termcolor as optional argument
 	{
-		std::cout << content << "\n";
+		std::cout << "\n" << content;
 	}
 	inline void spacer()
 	{
@@ -46,35 +46,30 @@ namespace func
 			std::cout << "\n" << label;
 			while (true)
 			{
-				char kp = _getch();
-				if (kp == VK_BACK)
+				switch (int kp = _getch())
 				{
-					if (var.length() < 1)
-						continue;
-					var.erase(var.size() - 1);
-					std::cout << "\x1B[1D" << "\x1B[1P";
-					continue;
-				}
-				if (kp == VK_RETURN)
-				{
-					return var;
-				}
-				else
-				{
+				default:
 					var += kp;
 					std::cout << '*';
+					continue;
+				case VK_BACK:
+					if (var.length() > 0) {
+						var.erase(var.size() - 1);
+						std::cout << "\x1B[1D" << "\x1B[1P";
+					}
+					continue;
+				case VK_RETURN:
+					return var;
 				}
-
 			}
 		}
 	}
 	inline std::string reversestring(std::string content)
 	{
 		std::reverse(content.begin(), content.end());
-
 		return content;
 	}
-	inline std::string replaceAll(std::string subject, const std::string& search,const std::string& replace) {
+	inline std::string replaceAll(std::string subject, const std::string& search, const std::string& replace) {
 		size_t pos = 0;
 		while ((pos = subject.find(search, pos)) != std::string::npos) {
 			subject.replace(pos, search.length(), replace);
@@ -83,16 +78,12 @@ namespace func
 		return subject;
 	}
 	inline std::string DownloadString(std::string URL) {
-		HINTERNET interwebs = InternetOpenA("Mozilla/5.0", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
-		
+		HINTERNET interwebs = InternetOpenA("Mozilla/5.0", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
+
 		HINTERNET urlFile;
 		std::string rtn;
 		if (interwebs) {
-			DWORD dwFlags = INTERNET_FLAG_NO_UI   // no UI please
-				| INTERNET_FLAG_NO_AUTH           // don't authenticate
-				| INTERNET_FLAG_PRAGMA_NOCACHE    // do not try the cache or proxy
-				| INTERNET_FLAG_NO_CACHE_WRITE;   // don't add this to the IE cache
-			urlFile = InternetOpenUrlA(interwebs, URL.c_str(), NULL, NULL, dwFlags, NULL);
+			urlFile = InternetOpenUrlA(interwebs, URL.c_str(), NULL, NULL, NULL, NULL);
 			if (urlFile) {
 				char buffer[2000];
 				DWORD bytesRead;

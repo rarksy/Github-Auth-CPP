@@ -10,8 +10,10 @@
 #include <chrono>
 #include <thread>
 #include <cctype>
-#define string std::string
+#include <future>
+using std::string;
 #define backspace "\x1B[1D" << "\x1B[1P"
+//i intend to remove goto:label entirely (maybe with do:while)
 
 void printASCII()
 {
@@ -37,22 +39,20 @@ void main()
 
 	while (true)
 	{
-		auto key = _getch();
-
-		if (key == 0x31) {
+		switch (int key = _getch())
+		{
+		case 0x31:
 			func::login();
 			break;
-		}
-
-		else if (key == 0x32) {
+		case 0x32:
 			func::Register();
 			break;
+		default:
+			continue;
 		}
-
-		else continue;
 	}
 	
-}
+} 
 
 void func::Register()
 {
@@ -86,26 +86,24 @@ EnterUsername:
 	}
 }
 
-void func::login()
+void func::login() 
 {
-	string user, pass;
 EnterUsername:
-
+	string user;
 	input("Enter Username: ", user);
-	string user_list = DownloadString("input raw file link here");
+	string pass, user_list = DownloadString("https://raw.githubusercontent.com/rarksyy/gh_auth_test/main/cppauth.auth"), hwInfo;
 	DWORD VSN = 0; GetVolumeInformation("c:\\", NULL, NULL, &VSN, NULL, NULL, NULL, NULL);
 	if (user_list.find(user + md5(user)) != string::npos) {
-		
 EnterPassword:
 		input("Enter Password: ", pass, true);
-		string hwInfo = user + md5(user) + md5(reversestring(GetCPUID() + std::to_string(VSN) + GetPCUser()));
+		hwInfo = user + md5(user) + md5(reversestring(GetCPUID() + std::to_string(VSN) + GetPCUser()));
 		if (user_list.find(hwInfo) != string::npos) {
 			if (user_list.find(hwInfo + md5(pass)) != string::npos) {
 				Access();
 			}
 			else {
 				set_col(termcolor::red);
-				log("\nIncorrect Password");
+				log("Incorrect Password");
 				set_col(termcolor::white);
 				goto EnterPassword;
 			}
@@ -115,16 +113,14 @@ EnterPassword:
 			log("Incorrect HWID");
 			set_col(termcolor::white);
 			goto EnterUsername;
-
 		}
 	}
 	else {
 		set_col(termcolor::red);
-		log("\nInvalid username");
+		log("Invalid username");
 		set_col(termcolor::white);
 		goto EnterUsername;
 	}
-
 }
 
 void func::Access()
