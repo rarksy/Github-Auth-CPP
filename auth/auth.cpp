@@ -61,7 +61,7 @@ void func::Register()
 	GetVolumeInformation("c:\\", NULL, NULL, &VSN, NULL, NULL, NULL, NULL);
 EnterUsername:
 	input("Enter A Username: ", user);
-	string user_list = DownloadString("https://raw.githubusercontent.com/rarksyy/gh_auth_test/main/cppauth.auth");
+	string user_list = DownloadString("<raw data file link here>");
 	if (user_list.find(user+md5(user)) != string::npos) {
 		set_col(termcolor::red);
 		log("Username Already In Use. Contact Support To Reset HWID");
@@ -91,7 +91,7 @@ void func::login()
 EnterUsername:
 	string user;
 	input("Enter Username: ", user);
-	string pass, user_list = DownloadString("https://raw.githubusercontent.com/rarksyy/gh_auth_test/main/cppauth.auth"), hwInfo;
+	string pass, user_list = DownloadString("<raw data file link here>"), hwInfo;
 	DWORD VSN = 0; GetVolumeInformation("c:\\", NULL, NULL, &VSN, NULL, NULL, NULL, NULL);
 	if (user_list.find(user + md5(user)) != string::npos) {
 EnterPassword:
