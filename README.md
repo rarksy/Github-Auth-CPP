@@ -1,6 +1,6 @@
 # Github-Auth
 
-A simple authentication system using Githubs raw file system and MD5 encryption to secure user data.
+A simple authentication system using Githubs raw file system and MD5 hashing to "secure" user data.
 Made in ~1 Day
 
 # Info
